@@ -1,28 +1,30 @@
-const vendasData = require("./data.json");
+class Sales {
+    #salesData;
 
+    constructor(){
+        this.#salesData = require("./data.json").vendas;
+    }
 
+    calculateComissions(){
+        const comission = {};
 
-function checkSales(data){
-    const bonus = {}; // List with all sellers and their comission.
+        this.#salesData.forEach(data => {
+            if(!comission[data.vendedor]){ comission[data.vendedor] = 0 } // Check if seller is already in the list and adds him case not.
 
-    data.vendas.forEach(log => {
-        if(!bonus[log.vendedor]){ bonus[log.vendedor] = 0 } // Check if seller is already in the list and adds him case not.
+            let value = 0;
 
-        let comission = 0;
+            if(data.valor >= 500){
+                value = data.valor*.05;
+            }else if(data.valor >= 100){
+                value = data.valor*.01;
+            }
 
-        if(log.valor >= 500){
-            comission = log.valor*0.05;
-        }else if(log.valor >= 100){
-            comission = log.valor*0.01;
-        }
+            comission[data.vendedor] += Math.floor(value);
+        });
 
-        bonus[log.vendedor] += Math.floor(comission); // Adds the comission value to seller's data.
-    });
-
-    return bonus
+        return comission;
+    }
 }
 
-
-
-const comission = checkSales(vendasData)
-for(const key in comission){ console.log(`Comissão de ${key}: R$${comission[key]}`) } // Outputs the result.
+const sales = new Sales();
+const comissions = sales.calculateComissions();
