@@ -1,4 +1,4 @@
-# Desafio Target
+# Desafio Target - Node.js
 
 ## Challenge 1 - Class Sales
 <br>
